@@ -12,3 +12,4 @@
 /Users/dengian/AP23-24/OOP/bib_ian_mondelaers/obj/Debug/net8.0/bib_ian_mondelaers.pdb
 /Users/dengian/AP23-24/OOP/bib_ian_mondelaers/obj/Debug/net8.0/bib_ian_mondelaers.genruntimeconfig.cache
 /Users/dengian/AP23-24/OOP/bib_ian_mondelaers/obj/Debug/net8.0/ref/bib_ian_mondelaers.dll
+/Users/dengian/AP23-24/OOP/bib_ian_mondelaers/obj/Debug/net8.0/bib_ian_mondelaers.sourcelink.json
