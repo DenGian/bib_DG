@@ -29,6 +29,15 @@
             isbn = value;
         }
     }
+    private string author;
+    public string Author
+    {
+        get { return author; }
+        set
+        {
+            author = value;
+        }
+    }
     private DateTime releaseDate;
     public DateTime ReleaseDate
     {
@@ -55,15 +64,7 @@
             numberOfPages = value;
         }
     }
-    private string author;
-    public string Author
-    {
-        get { return author; }
-        set
-        {
-            author = value;
-        }
-    }
+    
     private Genre genre;
     public Genre BookGenre
     {
@@ -73,22 +74,27 @@
             genre = value;
         }
     }
-    private bool isAvailable;
-    public bool IsAvailable
+    private string publisher;
+    public string Publisher
     {
-        get { return isAvailable; }
+        get { return publisher; }
         set
         {
-            isAvailable = value;
+            publisher = value;
         }
     }
-    private TimeSpan rentDuration;
-    public TimeSpan RentDuration
+
+    private decimal price;
+    public decimal Price
     {
-        get { return rentDuration; }
+        get { return price; }
         set
         {
-            rentDuration = value;
+            if (value < 0)
+            {
+                throw new ArgumentException("Prijs kan niet negatief zijn.");
+            }
+            price = value;
         }
     }
     private Library library;
@@ -119,18 +125,16 @@
         return true;
     }
 
-
-
     public void AllBookInfo()
     {
         Console.WriteLine($"Titel: {Title}");
-        Console.WriteLine($"Auteur: {Author}");
         Console.WriteLine($"ISBN: {ISBN}");
-        Console.WriteLine($"Datum van uitgave: {ReleaseDate}");
+        Console.WriteLine($"Auteur: {Author}");
+        Console.WriteLine($"Datum van uitgave: {ReleaseDate.ToString("dd-MM-yyyy")}");
         Console.WriteLine($"Aantal pagina's: {NumberOfPages}");
         Console.WriteLine($"Genre: {BookGenre}");
-        Console.WriteLine($"Beschikbaarheid: {(IsAvailable ? "Available" : "Not Available")}");
-        Console.WriteLine($"Huurtijd: {RentDuration}");
+        Console.WriteLine($"Uitgever: {Publisher}");
+        Console.WriteLine($"Prijs: {Price}");
     }
 
 public static List<Book> DeserializeBooksFromCsv(string csvFilePath)
@@ -152,8 +156,8 @@ public static List<Book> DeserializeBooksFromCsv(string csvFilePath)
         }
 
         string title = data[0];
-        string author = data[1];
-        string isbn = data[2];
+        string isbn = data[1];
+        string author = data[2];
         DateTime releaseDate = DateTime.Parse(data[3]);
         int numberOfPages = int.Parse(data[4]);
         Genre genre;
@@ -162,10 +166,10 @@ public static List<Book> DeserializeBooksFromCsv(string csvFilePath)
             Console.WriteLine($"Invalid genre '{data[5]}'. Skipping book creation.");
             continue;
         }
-        bool isAvailable = bool.Parse(data[6]);
-        TimeSpan rentDuration = TimeSpan.Parse(data[7]);
+        string publisher = data[6];
+        decimal price = decimal.Parse(data[7]);
 
-        Book book = new Book(title, isbn, releaseDate, numberOfPages,author, genre, isAvailable, rentDuration);
+        Book book = new Book(title, isbn, author, releaseDate, numberOfPages, genre, publisher, price);
 
         books.Add(book);
     }
@@ -188,21 +192,20 @@ public static List<Book> DeserializeBooksFromCsv(string csvFilePath)
     //constructors
     public Book(string title, string author, Library library)
     {
-        Title = title;
-        Author = author;
-        Library = library;
+        this.Title = title;
+        this.Author = author;
+        this.Library = library;
     }
-    public Book(string title, string isbn, DateTime releaseDate, int numberOfPages, string author, Genre genre, bool isAvailable, TimeSpan rentDuration)
-{
-    Title = title;
-    ISBN = isbn;
-    ReleaseDate = releaseDate;
-    NumberOfPages = numberOfPages;
-    Author = author;
-    BookGenre = genre;
-    IsAvailable = isAvailable;
-    RentDuration = rentDuration;
-}
-
+    public Book(string title, string isbn, string author, DateTime releaseDate, int numberOfPages, Genre genre, string publisher, decimal price)
+    {
+    this.Title = title;
+    this.ISBN = isbn;
+    this.Author = author;
+    this.ReleaseDate = releaseDate;
+    this.NumberOfPages = numberOfPages;
+    this.BookGenre = genre;
+    this.Publisher = publisher;
+    this.Price = price;
+    }       
     }   
 }
