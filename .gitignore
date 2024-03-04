@@ -398,7 +398,8 @@ FodyWeavers.xsd
 *.sln.iml
 
 bin
-
 obj
+.vs
+.DS_Store
 
-bib_ian_mondelaers.csproj
+bib_ian_mondelaers.sln
