@@ -108,6 +108,12 @@
         }
     
         // methodes
+
+        /// <summary>
+        /// Methode die nagaat of een ingegeven ISBN de standaard ISBN regels volgt
+        /// </summary>
+        /// <param name="isbn"></param>
+        /// <returns></returns>
         public static bool ValidISBN(string isbn)
         {
             string fullIsbn = isbn.Replace("-", "");
@@ -125,6 +131,9 @@
             return true;
         }
 
+        /// <summary>
+        /// MEthode die alle info van een boek weergeeft
+        /// </summary>
         public void AllBookInfo()
         {
             Console.WriteLine($"Titel: {Title}");
@@ -137,21 +146,26 @@
             Console.WriteLine($"Prijs: {Price}");
         }
 
+        /// <summary>
+        /// Methode die verantwoordelijk is voor de deserialisatie van de boeken in een csv file
+        /// </summary>
+        /// <param name="csvFilePath"></param>
+        /// <returns></returns>
         public static List<Book> DeserializeBooksFromCsv(string csvFilePath)
         {
             List<Book> books = new List<Book>();
 
-            Console.WriteLine("Reading books from CSV file...");
+            Console.WriteLine("Boeken lezen uit CSV-bestand...");
             string[] lines = File.ReadAllLines(csvFilePath);
 
-            Console.WriteLine("Parsing CSV data...");
-            foreach (string line in lines.Skip(1))
+            Console.WriteLine("CSV-gegevens verwerken...");
+            foreach(string line in lines.Skip(1))
             {
-                string[] data = line.Split(',');
+                string[] data = line.Split(';');
 
-                if (data.Length != 8)
+                if(data.Length != 8)
                 {
-                    Console.WriteLine("Incomplete data in CSV file. Skipping line.");
+                    Console.WriteLine("Onvolledige gegevens in CSV-bestand. Regel wordt overgeslagen.");
                     continue;
                 }
 
@@ -163,7 +177,7 @@
             Genre genre;
             if(!Enum.TryParse(data[5], true, out genre))
             {
-                Console.WriteLine($"Invalid genre '{data[5]}'. Skipping book creation.");
+                Console.WriteLine($"Ongeldig genre '{data[5]}'. Boekcreatie wordt overgeslagen.");
                 continue;
             }
             string publisher = data[6];
@@ -174,19 +188,9 @@
             books.Add(book);
             }
 
-            Console.WriteLine($"Successfully deserialized {books.Count} books from CSV file.");
-            Console.WriteLine("");
+            Console.WriteLine($"Succesvol {books.Count} boeken gedeserialiseerd uit CSV-bestand.");
+            Console.WriteLine();
             return books;
-        }
-
-        // Enum voor het genre van het boek
-        public enum Genre
-        {
-            Fiction,
-            NonFiction,
-            Romance,
-            Thriller,
-            ScienceFiction
         }
 
         //constructors

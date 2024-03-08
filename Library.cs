@@ -25,6 +25,11 @@
         }
 
         // Methodes
+
+        /// <summary>
+        /// Methode om een boek toe te voegen
+        /// </summary>
+        /// <param name="book"></param>
         public void AddBook(Book book)
         {
             if (!Books.Contains(book))
@@ -36,9 +41,14 @@
                 Console.WriteLine("Dit boek bestaat al in de bibliotheek.");
             }
         }
+
+        /// <summary>
+        /// Methode om een boek te verwijderen
+        /// </summary>
+        /// <param name="book"></param>
         public void RemoveBook(Book book)
         {
-            if (Books.Contains(book))
+            if(Books.Contains(book))
             {
                 Books.Remove(book);
             }
@@ -47,9 +57,16 @@
                 Console.WriteLine("Dit boek bestaat niet in de bibliotheek.");
             }
         }
+
+        /// <summary>
+        /// Methode om een boek te vinden aan de hand van de titel en de auteur
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="author"></param>
+        /// <returns></returns>
         public Book BookByTitleAuthor(string title, string author)
         {
-            foreach (Book book in Books)
+            foreach(Book book in Books)
             {
                 if(book.Title == title && book.Author == author)
                 {
@@ -58,9 +75,15 @@
             }
             return null;
         }
+
+        /// <summary>
+        /// Methode om een boek te vinden aan de hand van de ISBN nummer
+        /// </summary>
+        /// <param name="isbn"></param>
+        /// <returns></returns>
         public Book BookByIsbn(string isbn)
         {
-            foreach (Book book in Books)
+            foreach(Book book in Books)
             {
                 if(book.ISBN == isbn)
                 {
@@ -69,6 +92,12 @@
             }
             return null;
         }
+
+        /// <summary>
+        /// Methode die alle boeken van een gekozen auteur teruggeeft
+        /// </summary>
+        /// <param name="author"></param>
+        /// <returns></returns>
         public List<Book> AllBooksByAuthor(string author)
         {
             List<Book> authorBooks = new List<Book>();
@@ -81,6 +110,12 @@
             }
             return authorBooks;
         }
+
+        /// <summary>
+        /// Methode die alle boeken door een gekozen uitgeverij teruggeeft
+        /// </summary>
+        /// <param name="publisher"></param>
+        /// <returns></returns>
         public List<Book> AllBooksByPublisher(string publisher)
         {
             List<Book> publisherBooks = new List<Book>();

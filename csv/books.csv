@@ -1,8 +1,14 @@
-Title,ISBN,Author,ReleaseDate,NumberOfPages,BookGenre,Publisher,Price
-The Great Gatsby,9780743273565,F. Scott Fitzgerald,2004-09-30,180,Fiction,Scribner,10.99
-To Kill a Mockingbird,9780061120084,Harper Lee,2006-10-11,336,Fiction,Harper Perennial Modern Classics,12.99
-1984,9780451524935,George Orwell,1950-06-08,328,Fiction,Signet Classic,9.99
-The Catcher in the Rye,9780316769488,J.D. Salinger,1991-05-01,224,Fiction,Back Bay Books,11.99
-Pride and Prejudice,9780141439518,Jane Austen,2003-08-29,432,Romance,Penguin Classics,7.99
-Harry Potter and the Sorcerer's Stone,9780590353427,J.K. Rowling,1998-09-08,320,Fiction,Scholastic Inc.,14.99
-The Hitchhiker's Guide to the Galaxy,9780345391803,Douglas Adams,1995-09-27,216,ScienceFiction,Del Rey,9.99
+Title;ISBN;Author;ReleaseDate;NumberOfPages;BookGenre;Publisher;Price
+The Great Gatsby;9780743273565;F. Scott Fitzgerald;2004-09-30;180;Fiction;Scribner;10,99
+To Kill a Mockingbird;9780061120084;Harper Lee;2006-10-11;336;Fiction;Harper Perennial Modern Classics;12,99
+Sapiens: A Brief History of Humankind;9780062316097;Yuval Noah Harari;2015-02-10;443;NonFiction;Harper;11,99
+1984;9780451524935;George Orwell;1950-06-08;328;Fiction;Signet Classic;9,99
+The Little Prince;9780156012195;Antoine de Saint-Exupéry;1943-04-06;96;Fiction;Harcourt, Inc.;8,99
+The Hitchhiker's Guide to the Galaxy;9780345391803;Douglas Adams;1995-09-27;216;ScienceFiction;Del Rey;9,99
+The Selfish Gene;9780199291151;Richard Dawkins;2006-05-01;384;NonFiction;Oxford University Press;13,99
+The Catcher in the Rye;9780316769488;J.D. Salinger;1991-05-01;224;Fiction;Back Bay Books;11,99
+Pride and Prejudice;9780141439518;Jane Austen;2003-08-29;432;Romance;Penguin Classics;7,99
+The Bell Jar;9780060837020;Sylvia Plath;2006-08-01;288;Fiction;Harper Perennial Modern Classics;10,99
+Harry Potter and the Sorcerer's Stone;9780590353427;J.K. Rowling;1998-09-08;320;Fiction;Scholastic Inc.;14,99
+The Hitchhiker's Guide to the Galaxy;9780345391803;Douglas Adams;1995-09-27;216;ScienceFiction;Del Rey;9,99
+Puk van de Petteflet;9789021483849;Annie M.G. Schmidt;2004-03-19;160;ChildrensLiterature;Querido Kinderboeken;9,99
