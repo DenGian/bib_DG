@@ -62,6 +62,7 @@ namespace bib_ian_mondelaers
                         exit = true;
                         break;
                     default:
+                        Console.Clear();
                         Console.WriteLine("Ongeldige keuze!");
                         break;
                 }
