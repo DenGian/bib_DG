@@ -132,7 +132,7 @@
         }
 
         /// <summary>
-        /// MEthode die alle info van een boek weergeeft
+        /// Methode die alle info van een boek weergeeft
         /// </summary>
         public void AllBookInfo()
         {
@@ -174,12 +174,34 @@
             string author = data[2];
             DateTime releaseDate = DateTime.Parse(data[3]);
             int numberOfPages = int.Parse(data[4]);
+            string genreString = data[5];
             Genre genre;
-            if(!Enum.TryParse(data[5], true, out genre))
+            
+            switch (genreString.ToLower())
             {
-                Console.WriteLine($"Ongeldig genre '{data[5]}'. Boekcreatie wordt overgeslagen.");
-                continue;
+                case "fiction":
+                    genre = Genre.Fiction;
+                    break;
+                case "nonfiction":
+                    genre = Genre.NonFiction;
+                    break;
+                case "romance":
+                    genre = Genre.Romance;
+                    break;
+                case "thriller":
+                    genre = Genre.Thriller;
+                    break;
+                case "sciencefiction":
+                    genre = Genre.ScienceFiction;
+                    break;
+                case "childrensliterature":
+                    genre = Genre.ChildrensLiterature;
+                    break;
+                default:
+                    Console.WriteLine($"Ongeldig genre '{genreString}'. Boekcreatie wordt overgeslagen.");
+                    continue;
             }
+
             string publisher = data[6];
             decimal price = decimal.Parse(data[7]);
 
