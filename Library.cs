@@ -1,6 +1,6 @@
 ﻿namespace bib_ian_mondelaers
 {
-    public class Library
+    internal class Library
     {
         // Eigenschappen
         private string name;
@@ -16,6 +16,12 @@
             get { return books; }
             private set { books = value; }
         }
+        private Dictionary<DateTime, ReadingRoomItem> allReadingRoom = new Dictionary<DateTime, ReadingRoomItem>();
+        public Dictionary<DateTime, ReadingRoomItem> AllReadingRoom
+        {
+            get { return allReadingRoom; }
+        }
+        
 
         // Constructors
         public Library(string name)
@@ -127,6 +133,63 @@
                 }
             }
             return publisherBooks;
+        }
+
+        /// <summary>
+        /// Methode om de ISBN aan een boek toe te voegen
+        /// </summary>
+        /// <param name="book"></param>
+        public static void AddISBN(Book book)
+        {
+            Console.Write("Voer de ISBN van het boek in: ");
+            string isbn = Console.ReadLine();
+            if (Book.ValidISBN(isbn))
+            {
+                book.ISBN = isbn;
+                Console.WriteLine("\nInformatie succesvol toegevoegd aan het boek.");
+            }
+            else
+            {
+                Console.WriteLine("Ongeldige ISBN.");
+            }
+        }
+
+        /// <summary>
+        /// Methode om een genre aan een boek toe te voegen
+        /// </summary>
+        /// <param name="book"></param>
+        public static void AddGenre(Book book)
+        {
+            Console.WriteLine("\nKies het genre van het boek:");
+            for (int i = 0; i < 6; i++)
+            {
+                Genre genre = (Genre)i;
+                Console.WriteLine($"{i + 1}. {genre}");
+            }
+            Console.Write("Selecteer een genre [1-6]: ");
+            int genreChoice = int.Parse(Console.ReadLine());
+            if (genreChoice >= 1 && genreChoice <= 6)
+            {
+                Genre selectedGenre = (Genre)(genreChoice - 1);
+                book.BookGenre = selectedGenre;
+                Console.WriteLine("\nInformatie succesvol toegevoegd aan het boek.");
+            }
+            else
+            {
+                Console.WriteLine("Ongeldige invoer voor genre.");
+            }
+        }
+
+        /// <summary>
+        /// Methode om een uitgeverij aan een boek toe te voegen
+        /// </summary>
+        /// <param name="book"></param>
+        public static void AddPublisher(Book book)
+        {
+            Console.Write("Voer de uitgeverij van het boek in: ");
+            string publisher = Console.ReadLine();
+            book.Publisher = publisher;
+            Console.WriteLine("\nInformatie succesvol toegevoegd aan het boek.");
         }
     }
 }
