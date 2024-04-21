@@ -1,6 +1,6 @@
 ﻿namespace bib_ian_mondelaers;
 
-public enum Genre
+internal enum Genre
 {
     Fiction,
     NonFiction,
