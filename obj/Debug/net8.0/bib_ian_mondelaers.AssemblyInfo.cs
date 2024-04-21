@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("bib_ian_mondelaers")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+964f620afc099e44e6ec2a2c214298156c8be3c4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6c9b6a8300226e5a73fdc29c04f598a7b4e81e4f")]
 [assembly: System.Reflection.AssemblyProductAttribute("bib_ian_mondelaers")]
 [assembly: System.Reflection.AssemblyTitleAttribute("bib_ian_mondelaers")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
