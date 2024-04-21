@@ -1,6 +1,6 @@
 ﻿namespace bib_ian_mondelaers
 {
-    public class Book
+    internal class Book
     {
         // Eigenschappen
         private string title;
@@ -139,7 +139,7 @@
             Console.WriteLine($"Titel: {Title}");
             Console.WriteLine($"ISBN: {ISBN}");
             Console.WriteLine($"Auteur: {Author}");
-            Console.WriteLine($"Datum van uitgave: {ReleaseDate.ToString("dd-MM-yyyy")}");
+            Console.WriteLine($"Datum van uitgave: {ReleaseDate:dd-MM-yyyy}");
             Console.WriteLine($"Aantal pagina's: {NumberOfPages}");
             Console.WriteLine($"Genre: {BookGenre}");
             Console.WriteLine($"Uitgever: {Publisher}");
@@ -147,7 +147,7 @@
         }
 
         /// <summary>
-        /// Methode die verantwoordelijk is voor de deserialisatie van de boeken in een csv file
+        /// Methode die verantwoordelijk is voor het deserialiseren van boeken uit een csv file
         /// </summary>
         /// <param name="csvFilePath"></param>
         /// <returns></returns>
