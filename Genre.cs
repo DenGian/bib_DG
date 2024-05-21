@@ -7,5 +7,6 @@ internal enum Genre
     Romance,
     Thriller,
     ScienceFiction,
-    ChildrensLiterature
+    ChildrensLiterature,
+    Schoolboek
 }
