@@ -9,7 +9,6 @@
             get { return name; }
             private set { name = value; }
         }
-
         private List<Book> books;
         public List<Book> Books
         {
@@ -22,8 +21,12 @@
             get { return allReadingRoom; }
         }
         
-
         // Constructors
+
+        /// <summary>
+        /// Constructor met 1 parameter
+        /// </summary>
+        /// <param name="name"></param>
         public Library(string name)
         {
             Name = name;
@@ -38,7 +41,7 @@
         /// <param name="book"></param>
         public void AddBook(Book book)
         {
-            if (!Books.Contains(book))
+            if(!Books.Contains(book))
             {
                 Books.Add(book);
             }
@@ -47,7 +50,6 @@
                 Console.WriteLine("Dit boek bestaat al in de bibliotheek.");
             }
         }
-
         /// <summary>
         /// Methode om een boek te verwijderen
         /// </summary>
@@ -63,7 +65,6 @@
                 Console.WriteLine("Dit boek bestaat niet in de bibliotheek.");
             }
         }
-
         /// <summary>
         /// Methode om een boek te vinden aan de hand van de titel en de auteur
         /// </summary>
@@ -81,7 +82,6 @@
             }
             return null;
         }
-
         /// <summary>
         /// Methode om een boek te vinden aan de hand van de ISBN nummer
         /// </summary>
@@ -98,7 +98,6 @@
             }
             return null;
         }
-
         /// <summary>
         /// Methode die alle boeken van een gekozen auteur teruggeeft
         /// </summary>
@@ -116,7 +115,6 @@
             }
             return authorBooks;
         }
-
         /// <summary>
         /// Methode die alle boeken door een gekozen uitgeverij teruggeeft
         /// </summary>
@@ -133,63 +131,6 @@
                 }
             }
             return publisherBooks;
-        }
-
-        /// <summary>
-        /// Methode om de ISBN aan een boek toe te voegen
-        /// </summary>
-        /// <param name="book"></param>
-        public static void AddISBN(Book book)
-        {
-            Console.Write("Voer de ISBN van het boek in: ");
-            string isbn = Console.ReadLine();
-            if (Book.ValidISBN(isbn))
-            {
-                book.ISBN = isbn;
-                Console.WriteLine("\nInformatie succesvol toegevoegd aan het boek.");
-            }
-            else
-            {
-                Console.WriteLine("Ongeldige ISBN.");
-            }
-        }
-
-        /// <summary>
-        /// Methode om een genre aan een boek toe te voegen
-        /// </summary>
-        /// <param name="book"></param>
-        public static void AddGenre(Book book)
-        {
-            Console.WriteLine("\nKies het genre van het boek:");
-            for (int i = 0; i < 6; i++)
-            {
-                Genre genre = (Genre)i;
-                Console.WriteLine($"{i + 1}. {genre}");
-            }
-            Console.Write("Selecteer een genre [1-6]: ");
-            int genreChoice = int.Parse(Console.ReadLine());
-            if (genreChoice >= 1 && genreChoice <= 6)
-            {
-                Genre selectedGenre = (Genre)(genreChoice - 1);
-                book.BookGenre = selectedGenre;
-                Console.WriteLine("\nInformatie succesvol toegevoegd aan het boek.");
-            }
-            else
-            {
-                Console.WriteLine("Ongeldige invoer voor genre.");
-            }
-        }
-
-        /// <summary>
-        /// Methode om een uitgeverij aan een boek toe te voegen
-        /// </summary>
-        /// <param name="book"></param>
-        public static void AddPublisher(Book book)
-        {
-            Console.Write("Voer de uitgeverij van het boek in: ");
-            string publisher = Console.ReadLine();
-            book.Publisher = publisher;
-            Console.WriteLine("\nInformatie succesvol toegevoegd aan het boek.");
         }
     }
 }
