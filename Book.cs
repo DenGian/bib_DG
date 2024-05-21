@@ -1,6 +1,6 @@
 ﻿namespace bib_ian_mondelaers
 {
-    internal class Book
+    internal class Book: ILendable
     {
         // Eigenschappen
         private string title;
@@ -11,7 +11,7 @@
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentException("Titel mag niet leeg zijn.");
+                    throw new InvalidTitleException();
                 }
                 title = value;
             }
@@ -24,7 +24,7 @@
             {
                 if(!ValidISBN(value))
                 {
-                    throw new ArgumentException("Ongeldig ISBN");
+                    throw new InvalidISBNException();
                 }
                 isbn = value;
             }
@@ -46,7 +46,7 @@
             {
                 if(value > DateTime.Now)
                 {
-                    throw new ArgumentException("ReleaseDatum kan niet in de toekomst liggen.");
+                    throw new InvalidReleaseDateException();
                 }
                 releaseDate = value;
             }
@@ -59,7 +59,7 @@
             { 
                 if(value <= 0)
                 {
-                    throw new ArgumentException("Aantal pagina's moet een positief getal zijn.");
+                    throw new InvalidPageCountException();
                 }
                 numberOfPages = value;
             }
@@ -83,7 +83,6 @@
                 publisher = value;
             }
         }
-    
         private decimal price;
         public decimal Price
         {
@@ -92,7 +91,7 @@
             {
                 if (value < 0)
                 {
-                    throw new ArgumentException("Prijs kan niet negatief zijn.");
+                    throw new InvalidPriceException();
                 }
                 price = value;
             }
@@ -104,6 +103,27 @@
             set
             {
                 library = value;
+            }
+        }
+        private bool isAvailable;
+        public bool IsAvailable
+        {
+            get { return this.isAvailable; }
+            set { this.isAvailable = value; }
+        }
+        private DateTime borrowingDate;
+        public DateTime BorrowingDate
+        {
+            get { return this.borrowingDate; }
+            set { this.borrowingDate = value; }
+        }
+        private int borrowDays;
+        public int BorrowDays
+        {
+            get { return this.borrowDays; }
+            set 
+            { 
+                this.borrowDays = value;
             }
         }
     
@@ -130,7 +150,6 @@
             }
             return true;
         }
-
         /// <summary>
         /// Methode die alle info van een boek weergeeft
         /// </summary>
@@ -145,7 +164,6 @@
             Console.WriteLine($"Uitgever: {Publisher}");
             Console.WriteLine($"Prijs: {Price}");
         }
-
         /// <summary>
         /// Methode die verantwoordelijk is voor het deserialiseren van boeken uit een csv file
         /// </summary>
@@ -154,21 +172,17 @@
         public static List<Book> DeserializeBooksFromCsv(string csvFilePath)
         {
             List<Book> books = new List<Book>();
-
             Console.WriteLine("Boeken lezen uit CSV-bestand...");
             string[] lines = File.ReadAllLines(csvFilePath);
-
             Console.WriteLine("CSV-gegevens verwerken...");
             foreach(string line in lines.Skip(1))
             {
                 string[] data = line.Split(';');
-
                 if(data.Length != 8)
                 {
                     Console.WriteLine("Onvolledige gegevens in CSV-bestand. Regel wordt overgeslagen.");
                     continue;
                 }
-
             string title = data[0];
             string isbn = data[1];
             string author = data[2];
@@ -176,8 +190,7 @@
             int numberOfPages = int.Parse(data[4]);
             string genreString = data[5];
             Genre genre;
-            
-            switch (genreString.ToLower())
+            switch(genreString.ToLower())
             {
                 case "fiction":
                     genre = Genre.Fiction;
@@ -197,33 +210,208 @@
                 case "childrensliterature":
                     genre = Genre.ChildrensLiterature;
                     break;
+                case "schoolboek":
+                    genre = Genre.Schoolboek;
+                    break;
                 default:
                     Console.WriteLine($"Ongeldig genre '{genreString}'. Boekcreatie wordt overgeslagen.");
                     continue;
             }
-
             string publisher = data[6];
             decimal price = decimal.Parse(data[7]);
-
             Book book = new Book(title, isbn, author, releaseDate, numberOfPages, genre, publisher, price);
-
             books.Add(book);
             }
-
             Console.WriteLine($"Succesvol {books.Count} boeken gedeserialiseerd uit CSV-bestand.");
             Console.WriteLine();
             return books;
         }
+        /// <summary>
+        /// Methode om de ISBN aan een boek toe te voegen
+        /// </summary>
+        /// <param name="book"></param>
+        public static void AddISBN(Book book)
+        {
+            Console.Write("\nVoer de ISBN van het boek in: ");
+            string isbn = Console.ReadLine();
+            try
+            {
+                if(Book.ValidISBN(isbn))
+                {
+                    book.ISBN = isbn;
+                    Console.WriteLine("\nInformatie succesvol toegevoegd aan het boek.");
+                }
+                else
+                {
+                    throw new InvalidISBNException();
+                }
+            }
+            catch(InvalidISBNException iiex)
+            {
+                Console.WriteLine("\nFout bij het toevoegen van ISBN: " + iiex.ToString());
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("\nEr is een fout opgetreden bij het toevoegen van ISBN: " + e.Message);
+            }
+        }
+        /// <summary>
+        /// Methode om een genre aan een boek toe te voegen
+        /// </summary>
+        /// <param name="book"></param>
+        public static void AddGenre(Book book)
+        {
+            Console.WriteLine("\nKies het genre van het boek:");
+            for(int i = 0; i < 7; i++)
+            {
+                Genre genre = (Genre)i;
+                Console.WriteLine($"{i + 1}. {genre}");
+            }
+            Console.Write("Selecteer een genre [1-7]: ");
+            int genreChoice;
+            try
+            {
+                genreChoice = int.Parse(Console.ReadLine());
+                if(genreChoice < 1 || genreChoice > 7)
+                {
+                    throw new InvalidGenreException();
+                }
+                Genre selectedGenre = (Genre)(genreChoice - 1);
+                book.BookGenre = selectedGenre;
+                Console.WriteLine("\nInformatie succesvol toegevoegd aan het boek.");
+            }
+            catch(FormatException)
+            {
+                Console.WriteLine("\nOngeldige invoer voor genre. Voer a.u.b. een getal in.");
+            }
+            catch(InvalidGenreException igex)
+            {
+                Console.WriteLine("\nFout bij het toevoegen van het genre: " + igex.ToString());
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("\nEr is een fout opgetreden bij het toevoegen van het genre: " + e.Message);
+            }
+        }
+        /// <summary>
+        /// Methode om een uitgeverij aan een boek toe te voegen
+        /// </summary>
+        /// <param name="book"></param>
+        public static void AddPublisher(Book book)
+        {
+            try
+            {
+                Console.Write("\nVoer de uitgeverij van het boek in: ");
+                string publisher = Console.ReadLine();
+                if(!string.IsNullOrWhiteSpace(publisher))
+                {
+                    book.Publisher = publisher;
+                    Console.WriteLine("\nInformatie succesvol toegevoegd aan het boek.");
+                }
+                else
+                {
+                    throw new InvalidPublisherException();
+                }
+            }
+            catch(InvalidPublisherException ipex)
+            {
+                Console.WriteLine("\nFout bij het toevoegen van de uitgeverij: " + ipex.Message);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("\nEr is een fout opgetreden bij het toevoegen van de uitgeverij: " + e.Message);
+            }
+        }
+        /// <summary>
+        /// Methode om een boek te kunnen ontlenen
+        /// </summary>
+        public void Borrow()
+        {
+            if(IsAvailable)
+            {
+                if(BorrowingDate == default(DateTime))
+                {
+                    Console.WriteLine("Voer de uitleendatum in (dd/mm/yyyy): ");
+                    BorrowingDate = DateTime.Parse(Console.ReadLine());
+                }
+                IsAvailable = false;
+                if(BookGenre == Genre.Schoolboek)
+                {
+                    BorrowDays = 10;
+                }
+                else
+                {
+                    BorrowDays = 20;
+                }
+                Console.WriteLine($"\nUitleendatum: {BorrowingDate.ToShortDateString()}. \nDit boek moet voor {BorrowingDate.AddDays(BorrowDays).ToShortDateString()} teruggebracht worden.");
+            }
+            else
+            {
+                Console.WriteLine("\nDit boek is momenteel niet beschikbaar om te lenen.");
+            }
+        }
+        /// <summary>
+        /// Methode om een boek terug te brengen
+        /// </summary>
+        public void Return()
+        {
+            if(!IsAvailable)
+            {
+                IsAvailable = true;
+                DateTime returnDate = DateTime.Now;
+                if (returnDate > BorrowingDate.AddDays(BorrowDays))
+                {
+                    Console.WriteLine("\nHet boek is te laat teruggebracht.");
+                }
+                else
+                {
+                    Console.WriteLine("\nHet boek is op tijd teruggebracht.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nDit boek is niet uitgeleend.");
+            }
+        }
 
         //constructors
+
+        /// <summary>
+        /// Constructor met 3 paramters
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="author"></param>
+        /// <param name="library"></param>
         public Book(string title, string author, Library library)
         {
+            this.IsAvailable = true;
+            this.BorrowDays = 20;
             this.Title = title;
             this.Author = author;
             this.Library = library;
         }
+        /// <summary>
+        /// Constructor met 8 parameters
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="isbn"></param>
+        /// <param name="author"></param>
+        /// <param name="releaseDate"></param>
+        /// <param name="numberOfPages"></param>
+        /// <param name="genre"></param>
+        /// <param name="publisher"></param>
+        /// <param name="price"></param>
         public Book(string title, string isbn, string author, DateTime releaseDate, int numberOfPages, Genre genre, string publisher, decimal price)
         {
+            this.IsAvailable = true;
+            if (genre == Genre.Schoolboek)
+            {
+                this.BorrowDays = 10;
+            }
+            else
+            {
+                this.BorrowDays = 20;
+            }
             this.Title = title;
             this.ISBN = isbn;
             this.Author = author;
