@@ -36,6 +36,13 @@ internal class NewsPaper: ReadingRoomItem
     }
     
     // Constructors
+
+    /// <summary>
+    /// Constructor met 3 parameters
+    /// </summary>
+    /// <param name="title"></param>
+    /// <param name="publisher"></param>
+    /// <param name="date"></param>
     public NewsPaper(string title, string publisher, DateTime date): base(title, publisher)
     {
         this.date = date;
@@ -57,7 +64,7 @@ internal class NewsPaper: ReadingRoomItem
         foreach (string line in lines.Skip(1))
         {
             string[] data = line.Split(';');
-            if (data.Length != 3)
+            if(data.Length != 3)
             {
                 Console.WriteLine("Onvolledige gegevens in CSV-bestand. Regel wordt overgeslagen.");
                 continue;
