@@ -63,6 +63,14 @@ internal class Magazine: ReadingRoomItem
     }
     
     // Constructors
+
+    /// <summary>
+    /// Constructor met 4 parameters
+    /// </summary>
+    /// <param name="title"></param>
+    /// <param name="publisher"></param>
+    /// <param name="month"></param>
+    /// <param name="year"></param>
     public Magazine(string title, string publisher, byte month, uint year): base(title, publisher)
     {
         this.month = month;
@@ -82,10 +90,10 @@ internal class Magazine: ReadingRoomItem
         Console.WriteLine("Maandbladen lezen uit CSV-bestand...");
             string[] lines = File.ReadAllLines(csvFilePath);
             Console.WriteLine("CSV-gegevens verwerken...");
-            foreach (string line in lines.Skip(1))
+            foreach(string line in lines.Skip(1))
             {
                 string[] data = line.Split(';');
-                if (data.Length != 4)
+                if(data.Length != 4)
                 {
                     Console.WriteLine("Onvolledige gegevens in CSV-bestand. Regel wordt overgeslagen.");
                     continue;
