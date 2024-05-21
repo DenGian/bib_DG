@@ -62,8 +62,10 @@ namespace bib_ian_mondelaers
                 Console.WriteLine("8.  Toon alle kranten");
                 Console.WriteLine("9.  Toon alle maandbladen");
                 Console.WriteLine("10. Toon alle aanwinsten van de leeszaal van vandaag");
-                Console.WriteLine("11. Exit");
-                Console.Write("\nSelecteer een optie [1-11]: ");
+                Console.WriteLine("11. Ontleen een boek");
+                Console.WriteLine("12. Breng een boek terug");
+                Console.WriteLine("13. Exit");
+                Console.Write("\nSelecteer een optie [1-13]: ");
 
                 string choice = Console.ReadLine();
 
@@ -100,6 +102,12 @@ namespace bib_ian_mondelaers
                         AcquisitionsReadingRoomToday();
                         break;
                     case "11":
+                        BorrowBook();
+                        break;
+                    case "12":
+                        ReturnBook();
+                        break;
+                    case "13":
                         exit = true;
                         Console.Clear();
                         break;
@@ -128,11 +136,22 @@ namespace bib_ian_mondelaers
             Console.Write("Voer de auteur van het boek in: ");
             string author = Console.ReadLine();
 
-            Book book = new Book(title, author, library);
-            library.AddBook(book);
+            try
+            {
+                Book book = new Book(title, author, library);
+                library.AddBook(book);
 
-            Console.WriteLine();
-            Console.WriteLine("Boek succesvol toegevoegd aan de bibliotheek.");
+                Console.WriteLine();
+                Console.WriteLine("Boek succesvol toegevoegd aan de bibliotheek.");
+            }
+            catch(InvalidTitleException itex)
+            {
+                Console.WriteLine("Fout bij het toevoegen van een boek: " + itex.ToString());
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Er is een fout opgetreden bij het toevoegen van een boek: " + e.Message);
+            }
 
             Continue();
         }
@@ -153,30 +172,51 @@ namespace bib_ian_mondelaers
 
             Book book = library.BookByTitleAuthor(title, author);
 
-            if (book == null)
+            if(book == null)
             {
                 Console.WriteLine("\nBoek niet gevonden.");
                 Continue();
                 return;
             }
 
-            Console.WriteLine("\nWelke informatie wil je toevoegen?");
+            Console.WriteLine("\nWelke informatie wil je toevoegen?\n");
             Console.WriteLine("1. ISBN");
             Console.WriteLine("2. Genre");
             Console.WriteLine("3. Uitgeverij");
             Console.Write("Selecteer een optie [1-3]: ");
             string choice = Console.ReadLine();
 
-            switch (choice)
+            switch(choice)
             {
                 case "1":
-                    Library.AddISBN(book);
+                    try
+                    {
+                        Book.AddISBN(book);
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine("Er is een fout opgetreden bij het toevoegen van ISBN: " + e.Message);
+                    }
                     break;
                 case "2":
-                    Library.AddGenre(book);
+                    try
+                    {
+                        Book.AddGenre(book);
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine("Er is een fout opgetreden bij het toevoegen van Genre: " + e.Message);
+                    }
                     break;
                 case "3":
-                    Library.AddPublisher(book);
+                    try
+                    {
+                        Book.AddPublisher(book);
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine("Er is een fout opgetreden bij het toevoegen van Uitgeverij: " + e.Message);
+                    }
                     break;
                 default:
                     Console.WriteLine("\nOngeldige keuze!");
@@ -206,7 +246,7 @@ namespace bib_ian_mondelaers
             Console.WriteLine("\nInformatie van het gevonden boek:");
             Console.WriteLine($"- Titel: {book.Title}");
 
-            if (!string.IsNullOrEmpty(book.ISBN))
+            if(!string.IsNullOrEmpty(book.ISBN))
             {
                 Console.WriteLine($"- ISBN: {book.ISBN}");
             }
@@ -217,7 +257,7 @@ namespace bib_ian_mondelaers
 
             Console.WriteLine($"- Auteur: {book.Author}");
 
-            if (book.ReleaseDate != DateTime.MinValue)
+            if(book.ReleaseDate != DateTime.MinValue)
             {
                 Console.WriteLine($"- Datum van uitgave: {book.ReleaseDate.ToString("dd-MM-yyyy")}");
             }
@@ -226,7 +266,7 @@ namespace bib_ian_mondelaers
                 Console.WriteLine($"- Datum van uitgave: Niet beschikbaar");
             }
 
-            if (book.NumberOfPages != 0)
+            if(book.NumberOfPages != 0)
             {
                 Console.WriteLine($"- Aantal pagina's: {book.NumberOfPages}");
             }
@@ -235,7 +275,7 @@ namespace bib_ian_mondelaers
                 Console.WriteLine($"- Aantal pagina's: Niet beschikbaar");
             }
 
-            if (!string.IsNullOrEmpty(book.BookGenre.ToString()))
+            if(!string.IsNullOrEmpty(book.BookGenre.ToString()))
             {
                 Console.WriteLine($"- Genre: {book.BookGenre}");
             }
@@ -244,7 +284,7 @@ namespace bib_ian_mondelaers
                 Console.WriteLine($"- Genre: Niet beschikbaar");
             }
 
-            if (!string.IsNullOrEmpty(book.Publisher))
+            if(!string.IsNullOrEmpty(book.Publisher))
             {
                 Console.WriteLine($"- Uitgeverij: {book.Publisher}");
             }
@@ -253,7 +293,7 @@ namespace bib_ian_mondelaers
                 Console.WriteLine($"- Uitgeverij: Niet beschikbaar");
             }
 
-            if (book.Price != 0)
+            if(book.Price != 0)
             {
                 Console.WriteLine($"- Prijs: {book.Price}");
             }
@@ -279,7 +319,7 @@ namespace bib_ian_mondelaers
             Console.Write("Selecteer een zoekoptie [1-2]: ");
             
             string choice = Console.ReadLine();
-            switch (choice)
+            switch(choice)
             {
                 case "1":
                     SearchBookByISBN();
@@ -323,7 +363,6 @@ namespace bib_ian_mondelaers
                 Console.WriteLine("Gevonden boek:");
                 Console.WriteLine($"Titel: {book.Title}, Auteur: {book.Author}");
             }
-
         }
         
         /// <summary>
@@ -350,7 +389,6 @@ namespace bib_ian_mondelaers
                     Console.WriteLine($"- Titel: {book.Title}, Auteur: {book.Author}");
                 }
             }
-            
         }
 
         /// <summary>
@@ -520,7 +558,7 @@ namespace bib_ian_mondelaers
             Dictionary<DateTime, ReadingRoomItem> magazines = library.AllReadingRoom;
             foreach (KeyValuePair<DateTime, ReadingRoomItem> item in magazines)
             {
-                if (item.Value is Magazine)
+                if(item.Value is Magazine)
                 {
                     Magazine magazine = (Magazine)item.Value;
                     string formattedDate = $"{magazine.Month:D2}/{magazine.Year}";
@@ -571,7 +609,7 @@ namespace bib_ian_mondelaers
                 }
             }
 
-            if (magazines.Count > 0)
+            if(magazines.Count > 0)
             {
                 Console.WriteLine("\nMaandbladen:");
                 foreach (var magazine in magazines)
@@ -582,6 +620,59 @@ namespace bib_ian_mondelaers
 
             Continue();
         }
+        /// <summary>
+        /// Methode om boeken te kunnen ontlenen
+        /// </summary>
+        static void BorrowBook()
+        {
+            Console.Clear();
+            Console.WriteLine("11. Ontleen een boek\n");
+
+            Console.Write("Voer de titel van het boek in: ");
+            string title = Console.ReadLine();
+            Console.Write("Voer de auteur van het boek in: ");
+            string author = Console.ReadLine();
+
+            Book book = library.BookByTitleAuthor(title, author);
+
+            if(book == null)
+            {
+                Console.WriteLine("\nBoek niet gevonden.");
+                Continue();
+                return;
+            }
+
+            book.Borrow();
+
+            Continue();
+        }
+        /// <summary>
+        /// Methode om een boek terug te brengen
+        /// </summary>
+        static void ReturnBook()
+        {
+            Console.Clear();
+            Console.WriteLine("12. Breng een boek terug\n");
+
+            Console.Write("Voer de titel van het boek in: ");
+            string title = Console.ReadLine();
+            Console.Write("Voer de auteur van het boek in: ");
+            string author = Console.ReadLine();
+
+            Book book = library.BookByTitleAuthor(title, author);
+
+            if(book == null)
+            {
+                Console.WriteLine("\nBoek niet gevonden.");
+                Continue();
+                return;
+            }
+
+            book.Return();
+
+            Continue();
+        }
+
 
         /// <summary>
         /// Methode die ik gebruik op het einde van alle opties in het keuze menu om de gebruikers ervaring aangenamer te maken en om repetitie van code te vermijden
